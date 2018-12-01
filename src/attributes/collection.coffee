@@ -1,9 +1,10 @@
-
-_ = require "../underscore"
-http = require "../http"
-
-Function::define = (prop, desc) ->
-  Object.defineProperty @prototype, prop, desc
+import _ from "../underscore"
+import http from "../http"
+import client from "../client"
+import Collection from "./collection"
+import Link from "./link.coffee"
+import Item from "./item.coffee"
+import Query from "./query.coffee"
 
 module.exports = class Collection
   constructor: (collection)->
@@ -17,57 +18,27 @@ module.exports = class Collection
     @_items = null
     @_template = null
     @error = @_collection.error
-
-  @define "href"
-    get: ->
-      @_collection.href
-  @define "version"
-    get: ->
-      @_collection.version
-
-  @define "links",
-    get: ->
-      return @_links if @_links
-
-      @_links = links = []
-      Link = require "./link"
-
-      _.each @_collection.links, (link)->
-        links.push new Link link
-      @_links
+    @href = @_collection.href
+    @version = @_collection.version
+    @links = _.map @_collection.links, (link)->
+      new Link link
+    @items = _.map @_collection.items, (item)->
+      new Item item
+    @queries = _.map @_collection.queries, (query)->
+      new Query query
 
   link: (rel)->
     _.find @links, (link)-> link.rel is rel
 
-  @define "items",
-    get: ->
-      return @_items if @_items
-
-      @_items = items = []
-      Item = require "./item"
-
-      _.each @_collection.items, (item)->
-        items.push new Item item
-      @_items
-
   item: (href)->
     _.find @items, (item)-> item.href is href
-
-  @define "queries",
-    get: ->
-      queries = []
-      Query = require "./query"
-
-      _.each @_collection.queries||[], (query)->
-        queries.push new Query query
-      queries
 
   query: (rel)->
     query = _.find @_collection.queries||[], (query)->
       query.rel is rel
     return null if not query
 
-    Query = require "./query"
+    Query = require "./query.coffee"
     # Don't cache it since we allow you to set parameters and submit it
     new Query query
 
@@ -75,5 +46,5 @@ module.exports = class Collection
   # https://github.com/mamund/collection-json/blob/master/extensions/templates.md
 
   template: (name)->
-    Template = require "./template"
+    Template = require "./template.coffee"
     new Template @_collection.href, @_collection.template

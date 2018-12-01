@@ -1,9 +1,7 @@
-
-_ = require "../underscore"
-http = require "../http"
-client = require "../client"
-
-Collection = require "./collection"
+import _ from "../underscore"
+import http from "../http"
+import client from "../client"
+import Collection from "../collection"
 
 module.exports = class Query
   constructor: (@_query, @form={})->

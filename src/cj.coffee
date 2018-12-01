@@ -1,8 +1,9 @@
-
-request = require "request"
-http = require "./http"
+import request from "request"
+import http from "./http.coffee"
+import Client from "./client.coffee"
 
 http._get = (href, options, done)->
+  alert('GETTING');
   options.url = href
   request options, (error, response, body)->
     done error, body, response?.headers
@@ -25,4 +26,4 @@ http._del = (href, options, done)->
   request.del options, (error, response)->
     done error, response
 
-module.exports = require "./client"
+export default Client;

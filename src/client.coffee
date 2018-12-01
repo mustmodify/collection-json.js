@@ -1,5 +1,5 @@
-
-http = require "./http"
+import _ from "./underscore.coffee"
+import http from "./http.coffee"
 
 module.exports = (href, options, done)->
   if typeof options is 'function'
@@ -46,6 +46,3 @@ module.exports.parse = (collection, done)->
     error.body = JSON.stringify collection
 
   done error, collectionObj
-
-# Expose Collection
-module.exports.Collection = require "./attributes/collection"
