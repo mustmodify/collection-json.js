@@ -1,13 +1,7 @@
 module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.coffee$/,
-        use: [ 'coffee-loader' ]
-      }
-    ]
+  entry: './src/collection-json.js',
+  output: {
+    filename: 'collection-json.js',
+    path: __dirname + '/dist'
   },
-  node: {
-    fs: 'empty'
-  }
 }
