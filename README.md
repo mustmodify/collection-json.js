@@ -10,6 +10,11 @@ Test me with:
 npx mocha test/attributes.js --compilers js:babel-core/register
 ```
 
+Create dist file with:
+
+```
+npx webpack
+```
 
 
 Features
