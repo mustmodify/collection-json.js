@@ -16,18 +16,14 @@
   "author": "Cameron Bytheway",
   "license": "MIT",
   "dependencies": {
-    "regenerator-runtime": "^0.13.1",
-    "request": "^2.88.0",
     "underscore": "~1.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
     "babel-core": "^6.26.3",
-    "babel-preset-es2015": "^6.24.1",
     "babel-loader": "^8.0.4",
-    "cradle": "^0.7.1",
-    "express": "^3.0.6",
+    "babel-preset-es2015": "^6.24.1",
     "mocha": "^5.2.0",
     "net": "^1.0.2",
     "should": "~1.2.0",

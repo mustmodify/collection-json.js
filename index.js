@@ -1,2 +1,2 @@
-import Client from "./src/index.js"
+import Client from "./src/collection-json.js"
 export default Client;
