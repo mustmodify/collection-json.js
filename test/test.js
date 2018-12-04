@@ -6,7 +6,7 @@
 
 const should = require("should");
 
-const cj = require("../src");
+const cj = require("../src/collection-json");
 
 describe("Collection+JSON", function() {
   require("./browser");

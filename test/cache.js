@@ -6,7 +6,7 @@
 
 const should = require("should");
 
-const cj = require("../src");
+const cj = require("../src/collection-json");
 
 describe("Built-in Memory Cache", function() {
   it("should set cache");
