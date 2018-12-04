@@ -10,7 +10,7 @@ const should = require("should");
 const fs = require("fs");
 const _ = require("underscore");
 
-const cj = require("..");
+const cj = require("../src");
 
 describe("Attributes", function() {
 
@@ -134,7 +134,7 @@ describe("Attributes", function() {
         })()
       );
     });
-        
+
     describe("[queries](http://amundsen.com/media-types/collection/format/#arrays-queries)", function() {
 
       it("should iterate queries", () =>

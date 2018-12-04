@@ -5,8 +5,8 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import request from "request";
-import http from "./http.coffee";
-import Client from "./client.coffee";
+import http from "./http";
+import Client from "./client";
 
 http._get = function(href, options, done){
   alert('GETTING');

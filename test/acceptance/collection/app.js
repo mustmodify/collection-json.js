@@ -1,10 +1,5 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-// 2001-05-25 (mca) : collection+json 
-// Designing Hypermedia APIs by Mike Amundsen (2011) 
+// 2001-05-25 (mca) : collection+json
+// Designing Hypermedia APIs by Mike Amundsen (2011)
 
 /*
 Module dependencies.
@@ -108,7 +103,7 @@ app.configure("development", function() {
 
     const status = error.status || 500;
 
-    const collection = { 
+    const collection = {
       collection: {
         version: "1.0",
         href: `${host}${req.url}`,
@@ -132,7 +127,7 @@ app.configure("production", () => app.use(express.errorHandler()));
 
 //#Routes
 
-// handle default task list 
+// handle default task list
 app.get("/collection/tasks", function(req, res, next) {
   const view = "/_design/example/_view/due_date";
   return db.get(view, function(err, doc) {
@@ -282,7 +277,7 @@ app.post("/collection/tasks/;closed", addTask);
 app.post("/collection/tasks/;open", addTask);
 app.post("/collection/tasks/;date-range", addTask);
 
-// handle updating an existing task item 
+// handle updating an existing task item
 app.put("/collection/tasks/:i", function(req, res, next) {
   const idx = (req.params.i || "");
   let description = undefined;

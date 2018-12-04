@@ -6,7 +6,7 @@
 
 const should = require("should");
 
-const cj = require("..");
+const cj = require("../src");
 
 describe("Node HTTP Client", function() {
   it("should 'HEAD'");

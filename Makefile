@@ -5,12 +5,12 @@ REPORTER = spec
 
 test:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
-		--reporter $(REPORTER) --compilers coffee:coffee-script test/test.coffee
+		--reporter $(REPORTER) test/test.js
 
 test-acceptance:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
-		--compilers coffee:coffee-script --reporter $(REPORTER) \
-		test/acceptance/integration.coffee
+		-script --reporter $(REPORTER) \
+		test/acceptance/integration.js
 
 build:
 	@mkdir -p build
@@ -19,7 +19,7 @@ build/collection-json.js: build
 	@echo "Building bare"
 	@./node_modules/browserify/bin/cmd.js \
 		-i 'underscore' \
-		browser/cj.bare.coffee \
+		browser/cj.bare.js \
 		-o build/collection-json.js
 build/collection-json.min.js: build
 	@echo "Minify bare"
@@ -31,7 +31,7 @@ build/collection-json.angular.js: build
 	@echo "Building angular"
 	@./node_modules/browserify/bin/cmd.js \
 		-i 'underscore' \
-		browser/cj.angular.coffee \
+		browser/cj.angular.cj \
 		-o build/collection-json.angular.js
 build/collection-json.angular.min.js: build
 	@echo "Minify angular"
@@ -43,7 +43,7 @@ build/jquery.collection-json.js: build
 	@echo "Building jquery"
 	@./node_modules/browserify/bin/cmd.js \
 		-i 'underscore' \
-		browser/cj.jquery.coffee \
+		browser/cj.jquery.js \
 		-o build/jquery.collection-json.js
 build/jquery.collection-json.min.js: build
 	@echo "Minify jquery"

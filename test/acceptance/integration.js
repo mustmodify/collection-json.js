@@ -126,7 +126,7 @@ describe("Integration", function() {
   return describe("Extensions", () => it("should validate client input"));
 });
 
-  //   
+  //
   //   it "should read [template collection](https://github.com/mamund/collection-json/blob/master/extensions/templates.md)"
   //   it "should submit [template collection](https://github.com/mamund/collection-json/blob/master/extensions/templates.md)"
   //   it "should [validate template input](https://github.com/mamund/collection-json/blob/master/extensions/template-validation.md)"

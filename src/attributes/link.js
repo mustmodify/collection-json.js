@@ -5,13 +5,11 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-let Link;
-const http = require("../http");
-const client = require("../client");
+import http from '../http';
+import Client from '../client';
+import Collection from "./collection";
 
-const Collection = require("./collection");
-
-module.exports = (Link = class Link {
+export default class Link {
   constructor(_link){
     this._link = _link;
   }
@@ -32,7 +30,7 @@ module.exports = (Link = class Link {
 
     return http.get(this._link.href, options, function(error, collection){
       if (error) { return done(error); }
-      return client.parse(collection, done);
+      return Client.parse(collection, done);
     });
   }
-});
+}
