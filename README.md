@@ -1,7 +1,16 @@
 Collection+JSON Client for JavaScript [![Build Status](https://secure.travis-ci.org/collection-json/collection-json.js.png)](http://travis-ci.org/collection-json/collection-json.js)
 =====================================
 
-Documentation will be finished once the API is solidified.
+Fork Notes
+----------
+
+Test me with:
+
+```
+npx mocha test/attributes.js --compilers js:babel-core/register
+```
+
+
 
 Features
 --------
