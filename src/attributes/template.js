@@ -1,17 +1,15 @@
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
- * DS103: Rewrite code to no longer use __guard__
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let Template;
 import _ from "../underscore";
 import http from "../http";
 import client from "../client";
 import collection from "./collection";
 
-module.exports = (Template = class Template {
+export default class Template {
   constructor(href, _template1, form){
     this.href = href;
     this._template = _template1;
@@ -39,7 +37,8 @@ module.exports = (Template = class Template {
   }
 
   promptFor(key){
-    return __guard__(this.datum(key), x => x.prompt);
+    let d = this.datum(key);
+    return(d && d.prompt);
   }
 
   submit(done){
@@ -59,8 +58,4 @@ module.exports = (Template = class Template {
       return client.parse(collection, done);
     });
   }
-});
-
-function __guard__(value, transform) {
-  return (typeof value !== 'undefined' && value !== null) ? transform(value) : undefined;
 }

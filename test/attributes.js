@@ -10,7 +10,7 @@ const should = require("should");
 const fs = require("fs");
 const _ = require("underscore");
 
-const cj = require("../src");
+const cj = require("..").default;
 
 describe("Attributes", function() {
 
@@ -141,7 +141,7 @@ describe("Attributes", function() {
         (() => {
           const result = [];
           for (var query of Array.from(collection.queries)) {
-            const orig = _.find(data.collection.queries, _query=> _query.rel === query.rel);
+            const orig = data.collection.queries.find( _query => _query.rel === query.rel);
             query.href.should.equal(orig.href);
             query.rel.should.equal(orig.rel);
             result.push(query.prompt.should.equal(orig.prompt));

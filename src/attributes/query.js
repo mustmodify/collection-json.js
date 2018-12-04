@@ -13,17 +13,30 @@ import Collection from "./collection";
 
 export default class Query
 {
-   constructor(_query1, form)
+   constructor(_query_in, form_in)
    {
-     this._query = _query1;
-     if (form == null) { form = {}; }
-     this.form = form;
+     this._query = _query_in;
+     this.form = form_in || {}
+
      const { _query } = this;
      const _form = this.form;
 
      _query.data.forEach(datum => {
-       if ((_form[datum.name] == null)) { return _form[datum.name] = datum.value; }
+       if ((_form[datum.name] == null)) { _form[datum.name] = datum.value; }
      });
+
+   }
+
+   get href() {
+     return this._query.href;
+   }
+
+   get rel() {
+     return this._query.rel;
+   }
+
+   get prompt() {
+     return this._query.prompt;
    }
 
    datum(key){

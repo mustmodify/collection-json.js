@@ -14,13 +14,13 @@ export default class Link {
     this._link = _link;
   }
 
-  href() {
+  get href() {
     return this._link.href;
   }
-  rel() {
+  get rel() {
     return this._link.rel;
   }
-  prompt() {
+  get prompt() {
     return this._link.prompt;
   }
 

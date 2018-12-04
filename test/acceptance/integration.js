@@ -7,7 +7,7 @@
 
 const should = require("should");
 
-const cj = require("../..");
+const cj = require("../..").default;
 
 describe("Integration", function() {
 

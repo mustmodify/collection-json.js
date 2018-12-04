@@ -1,3 +1,3 @@
 
-window.CollectionJSON = require("../lib/client");
-window.CollectionJSON.http = require("../lib/http");
+window.CollectionJSON = require("../src/client");
+window.CollectionJSON.http = require("../src/http");

@@ -29,7 +29,7 @@
     "@babel/preset-env": "^7.2.0",
     "babel-loader": "^8.0.4",
     "cradle": "^0.7.1",
-    "express": "^4.16.4",
+    "express": "^3.0.6",
     "net": "^1.0.2",
     "should": "~1.2.0",
     "tls": "0.0.1",

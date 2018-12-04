@@ -6,6 +6,7 @@
  */
 import _ from "./underscore";
 import http from "./http";
+import Collection from './attributes/collection';
 
 export default class Client {
   constructor(href, options, done){
@@ -46,7 +47,7 @@ export default class Client {
     // Create a new Collection
     let collectionObj = null;
     try {
-      collectionObj = new module.exports.Collection(collection);
+      collectionObj = new Collection(collection);
     } catch (error2) {
       e = error2;
       e.body = JSON.stringify(collection);

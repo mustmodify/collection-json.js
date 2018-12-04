@@ -21,6 +21,10 @@ export default class Item
      return _.clone(datum);
    }
 
+   get href() {
+      return( this._item.href );
+   }
+
    get(key)
    {
      let datum = this.datum(key);
