@@ -7,6 +7,7 @@
 import http from "./http";
 import Client from "./client";
 
+window.cJ = Client;
 
 let http_callback = (response) => {
     //should call done with 'error, body-as-json, response headers'
@@ -20,7 +21,7 @@ http._get = function(href, options, done){
 };
 
 http._post = function(href, options, done){
-  headers = Object.assign({},
+  let headers = Object.assign({},
               options.headers,
               {"Content-Type": "application/collection+json; charset=utf-8"},
             )
@@ -37,7 +38,7 @@ http._post = function(href, options, done){
 };
 
 http._put = function(href, options, done){
-  headers = Object.assign({},
+  let headers = Object.assign({},
               options.headers,
               {"Content-Type": "application/collection+json; charset=utf-8"},
             )
@@ -54,7 +55,7 @@ http._put = function(href, options, done){
 };
 
 http._del = function(href, options, done){
-  headers = Object.assign({},
+  let headers = Object.assign({},
               options.headers,
               {"Content-Type": "application/collection+json; charset=utf-8"},
             )

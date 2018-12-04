@@ -22,6 +22,7 @@ export default class Client {
   };
 
   static parse(collection, done){
+    window.c = collection;
     // Throw an error telling the caller it needs a callback for this
     // function to make sense
     let _error, e;
