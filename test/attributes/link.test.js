@@ -9,7 +9,7 @@ beforeEach( () => {
   collection = new Collection(data);
 });
 
-test('receives data', () => {
+test('handles attribute data', () => {
   let link = new Link({href: 'http://www.trek.com/picard', rel: 'Captain', prompt: "Ship Leader"})
   expect(link.href).toBe('http://www.trek.com/picard')
   expect(link.rel).toBe('Captain')

@@ -39,3 +39,10 @@ test('it provides blank attributes', () => {
 test('can has template items', () => {
   expect(collection.template).toBeInstanceOf(Template);
 });
+
+test('Can get a link by rel', () => {
+  const link = collection.link(orig.rel);
+  expect(link.href).toBe(orig.href);
+  expect(link.rel).toBe(orig.rel);
+  expect(link.prompt).toBe(orig.prompt);
+});
