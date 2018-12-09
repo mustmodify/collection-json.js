@@ -1,13 +1,6 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import http from "./http";
 import Client from "./client";
-
-window.cJ = Client;
+import fetch from 'node-fetch';
 
 let http_callback = (response) => {
     //should call done with 'error, body-as-json, response headers'
@@ -17,7 +10,7 @@ let http_callback = (response) => {
 
 http._get = function(href, options, done){
   options.url = href;
-  return(window.fetch(href).then((response) => http_callback(response)).catch(error => done(error)));
+  fetch(href).then((response) => http_callback(response)).catch(error => done(error));
 };
 
 http._post = function(href, options, done){
@@ -34,7 +27,7 @@ http._post = function(href, options, done){
       credentials: "same-origin", referrer: "client",
       })
 
-  return(window.fetch(href, http_options).then(http_callback));
+    fetch(href, http_options).then(http_callback);
 };
 
 http._put = function(href, options, done){
@@ -51,7 +44,7 @@ http._put = function(href, options, done){
       credentials: "same-origin", referrer: "client",
       })
 
-  return(window.fetch(href, http_options).then(http_callback));
+    fetch(href, http_options).then(http_callback);
 };
 
 http._del = function(href, options, done){
@@ -68,7 +61,7 @@ http._del = function(href, options, done){
       credentials: "same-origin", referrer: "client",
       })
 
-  return(window.fetch(href, http_options).then(http_callback));
+  fetch(href, http_options).then(http_callback);
 };
 
 export default Client;
