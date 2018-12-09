@@ -17,8 +17,15 @@ export default class Item
    datum(key)
    {
      let datum = this._item && this._item.data && this._item.data.find(item => item.name === key);
-     // So they don't edit it
-     return _.clone(datum);
+     if(datum)
+     {
+       // So they don't edit it
+       return _.clone(datum);
+     }
+     else
+     {
+        return(null);
+     }
    }
 
    get href() {

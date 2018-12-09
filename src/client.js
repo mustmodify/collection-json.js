@@ -22,7 +22,6 @@ export default class Client {
   };
 
   static parse(collection, done){
-    window.c = collection;
     // Throw an error telling the caller it needs a callback for this
     // function to make sense
     let _error, e;
@@ -40,8 +39,9 @@ export default class Client {
       } catch (error1) {
         e = error1;
         e.body = collection;
-        console.log(e.body);
-        done(e);
+        return done(e);
+         // strangely, tests will fail without the return. I guess future
+         // future calls to 'done' are somehow also effective.
       }
     }
 

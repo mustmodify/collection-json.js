@@ -15,13 +15,13 @@ export default class Link {
   }
 
   get href() {
-    return this._link.href;
+    return (this._link && this._link.href || null);
   }
   get rel() {
-    return this._link.rel;
+    return (this._link && this._link.rel || null);
   }
   get prompt() {
-    return this._link.prompt;
+    return (this._link && this._link.prompt || null);
   }
 
   follow(done){

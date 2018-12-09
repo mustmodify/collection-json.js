@@ -11,6 +11,7 @@ import collection from "./collection";
 
 export default class Template {
   constructor(href, _template1, form){
+    if(href == null || href == undefined || href == "") { throw "Template without a target URL" }
     this.href = href;
     this._template = _template1;
     if (form == null) { form = {}; }

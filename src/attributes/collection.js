@@ -16,9 +16,9 @@ export default class Collection {
     this.error = this._collection.error;
     this.href = this._collection.href;
     this.version = this._collection.version;
-    this.links = this._collection.links.map(link => new Link(link));
-    this.items = this._collection.items.map(item => new Item(item));
-    this.queries = this._collection.queries.map(query => new Query(query));
+    this.links = (this._collection.links || []).map(link => new Link(link));
+    this.items = (this._collection.items || []).map(item => new Item(item));
+    this.queries = (this._collection.queries || []).map(query => new Query(query));
   }
 
   link(rel){
@@ -37,7 +37,14 @@ export default class Collection {
     return new Query(query);
   }
 
-  template(name){
-    return new Template(this._collection.href, this._collection.template);
+  get template() {
+    if( this._collection.template )
+    {
+      return new Template(this._collection.href, this._collection.template);
+    }
+    else
+    {
+      return(null);
+    }
   }
 }
