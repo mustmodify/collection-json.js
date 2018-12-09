@@ -41,8 +41,8 @@ test('can has template items', () => {
 });
 
 test('Can get a link by rel', () => {
-  const link = collection.link(orig.rel);
-  expect(link.href).toBe(orig.href);
-  expect(link.rel).toBe(orig.rel);
-  expect(link.prompt).toBe(orig.prompt);
+  let link = collection.link('feed');
+  expect(link.href).toBe('http://example.org/friends/rss');
+  expect(link.rel).toBe('feed');
+  expect(link.prompt).toBe('Feed');
 });
