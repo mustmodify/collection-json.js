@@ -1,104 +1,167 @@
+import fetch from 'node-fetch';
+import array_flatten from 'array-flatten';
 
-let defaults;
-module.exports = (defaults = {
-  _get(href, options, done){
-    if (done == null) { done = function(){}; }
-    return done(new Error("'GET' not implemented"));
-  },
+let content_type = "application/vnd.collection+json";
 
-  _post(href, options, done){
-    if (done == null) { done = function(){}; }
-    return done(new Error("'POST' not implemented"));
-  },
-
-  _put(href, options, done){
-    if (done == null) { done = function(){}; }
-    return done(new Error("'PUT' not implemented"));
-  },
-
-  _del(href, options, done){
-    if (done == null) { done = function(){}; }
-    return done(new Error("'DELETE' not implemented"));
-  },
-
-  cache: {
-    // This is a fake cache. You should probably add a real one...
-    put(key, value, time, done){
-      if (done == null) { done = function(){}; }
-      if (typeof time === 'function') {
-        done = time;
-        time = null;
-      }
-      return done();
-    },
-    del(key, done){
-      if (done == null) { done = function(){}; }
-      return done();
-    },
-    clear(done){
-      if (done == null) { done = function(){}; }
-      return done();
-    },
-    get(key, done){
-      if (done == null) { done = function(){}; }
-      return done();
-    },
-    size(done){
-      if (done == null) { done = function(){}; }
-      return done(0);
-    },
-    memsize(done){
-      if (done == null) { done = function(){}; }
-      return done(0);
-    },
-    debug(){
-      return true;
-    }
+class HttpImplementation {
+  http_callback(response, done) {
+    // should call done with 'error, body-as-json, response headers'
+    if(response.status.ok || response.status < 400) {
+      done(null, response.text(), response.headers) }
+    else { done(response.status); }
   }
-});
 
-module.exports["content-type"] = "application/vnd.collection+json";
+  get(href, options, done) {
+    fetch(href).then((response) => this.http_callback(response, done)).catch(error => done(error));
+  };
 
-module.exports.get = (href, options, done)=>
-  defaults.cache.get(href, function(error, collection){
-    // Give them the cached stuff if we have it
-    if (error || collection) { return done(error, collection); }
+  post(href, options, done) {
+    http_options = Object.assign({}, options,
+        {
+             method: "POST",        body: JSON.stringify(options.body),
+            headers: options.headers,
+           redirect: "follow",      mode: "CORS",
+        credentials: "same-origin", referrer: "client",
+        })
 
+    return(fetch(href, http_options).then(this.http_callback, done));
+  };
+
+  put(href, options, done) {
+    http_options = Object.assign({}, options,
+      {
+           method: "PUT",        body: JSON.stringify(options.body),
+          headers: headers,
+         redirect: "follow",      mode: "CORS",
+      credentials: "same-origin", referrer: "client",
+      })
+
+    return(fetch(href, http_options).then(this.http_callback, done));
+  }
+
+  delete(href, options, done){
+    http_options = Object.assign({}, options,
+        {
+             method: "DELETE",        body: JSON.stringify(options.body),
+            headers: headers,
+           redirect: "follow",      mode: "CORS",
+        credentials: "same-origin", referrer: "client",
+        })
+
+    return(fetch(href, http_options).then(http_callback, done));
+  };
+}
+
+class InterfaceLayer {
+  constructor( network_layer )
+  {
+    if( network_layer == null || network_layer == undefined )
+    { this.source = new HttpImplementation(); }
+    else
+    { this.source = network_layer ; }
+  }
+
+  get(href, options, done) {
+    if(!options.headers) { options.headers = {} }
+    options.headers["accept"] = content_type;
+
+    this.source.get(href, options, function(error, collection, headers) {
+      // the previous implementation of this was async, so
+      // it might bear reworking once figured out
+      // seems like you could add a layer that would try each one
+      // and, on failure, try the next.
+
+      if( error || collection )
+      {
+        // if a collection is returned, the source should handle caching
+        // though in the original code...
+        // https://github.com/collection-json/collection-json.js/blob/master/lib/http.coffee#L49
+        return(done(error, collection, headers));
+      }
+      else
+      {
+        return(false);
+      }
+    })
+  }
+
+  post(href, options, done) {
+    if (options == null) { options = {}; }
     if (!options.headers) { options.headers = {}; }
-    options.headers["accept"] = module.exports["content-type"];
 
-    module.exports.setOptions(href, options);
+    options.headers = Object.assign({}, options.headers, {
+      "accept": content_type,
+      "content-type": content_type,
+      "Content-Type": "application/collection+json; charset=utf-8"
+    })
 
-    return defaults._get(href, options, function(error, collection, headers){
-      if (error) { return done(error); }
-      performCache(collection, headers);
-      return done(error, collection);
-    });
-  })
-;
+    this.source.post(href, options, function(error, collection, headers)
+    {
+      if( error || collection )
+      {
+        // if a collection is returned, the source should handle caching
+        // though in the original code...
+        // https://github.com/collection-json/collection-json.js/blob/master/lib/http.coffee#L49
+        return(done(error, collection, headers));
+      }
+      else
+      {
+        return(false);
+      }
+    })
+  }
 
-module.exports.post = function(href, options, done){
+  put(href, options, done) {
+    if (options == null) { options = {}; }
+    if (!options.headers) { options.headers = {}; }
 
-  if (options == null) { options = {}; }
-  if (!options.headers) { options.headers = {}; }
-  options.headers["accept"] = module.exports["content-type"];
-  options.headers["content-type"] = module.exports["content-type"];
+    options.headers = Object.assign({}, options.headers, {
+      "accept": content_type,
+      "content-type": content_type,
+      "Content-Type": "application/collection+json; charset=utf-8"
+    })
 
-  module.exports.setOptions(href, options);
-  
-  return defaults._post(href, options, (error, collection, headers)=>
-    // Do we cache this?
-    done(error, collection)
-  );
-};
+    this.source.put(href, options, function(error, collection, headers)
+    {
+      if( error || collection )
+      {
+        // if a collection is returned, the source should handle caching
+        // though in the original code...
+        // https://github.com/collection-json/collection-json.js/blob/master/lib/http.coffee#L49
+        return(done(error, collection, headers));
+      }
+      else
+      {
+        return(false);
+      }
+    })
+  }
 
-// Should be overridden by the client
-module.exports.setOptions = function(href, options){};
+  delete(href, options, done) {
+    if (options == null) { options = {}; }
+    if (!options.headers) { options.headers = {}; }
 
-var performCache = function(collection, headers){};
-  // Expires
-  // expires = response.headers.expires
-  // # TODO convert to time-from-now
-  // # Cache-Control
-  // # TODO implement
-  // defaults.cache.put response.request.href, response.body, new Date(expires).getTime() if expires
+    options.headers = Object.assign({}, options.headers, {
+      "accept": content_type,
+      "content-type": content_type,
+      "Content-Type": "application/collection+json; charset=utf-8"
+    })
+
+    this.source.delete(href, options, function(error, collection, headers)
+    {
+      if( error || collection )
+      {
+        // if a collection is returned, the source should handle caching
+        // though in the original code...
+        // https://github.com/collection-json/collection-json.js/blob/master/lib/http.coffee#L49
+        return(done(error, collection, headers));
+      }
+      else
+      {
+        return(false);
+      }
+    })
+  }
+}
+
+export default (new InterfaceLayer())
