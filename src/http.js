@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import array_flatten from 'array-flatten';
 
 let content_type = "application/vnd.collection+json";
 
