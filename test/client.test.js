@@ -1,15 +1,5 @@
 import Client from '../src/client.js'
 
-/*
-beforeEach( () => {
-  let data = require("./fixtures/original");
-  Client.parse(data, function(error, _collection) {
-    if( error ) { throw error };
-    collection = _collection;
-  });
-});
-*/
-
 test('throws an error if the cJ version number is unexpected', () => {
   expect.assertions(2);
   Client.parse({collection: {version: "1.1", href: "http://www.stuff.test"}},
