@@ -2,15 +2,15 @@ import http from "./http";
 import Client from "./client";
 import fetch from 'node-fetch';
 
-let http_callback = (response) => {
+let http_callback = (response, done) => {
     //should call done with 'error, body-as-json, response headers'
-    if(status.ok || status < 400) { done(null, response.json(), response.headers) }
+    if(response.status.ok || response.status < 400) { done(null, response.json(), response.headers) }
     else { done(response.status); }
   }
 
 http._get = function(href, options, done){
   options.url = href;
-  fetch(href).then((response) => http_callback(response)).catch(error => done(error));
+  fetch(href).then((response) => http_callback(response, done)).catch(error => done(error));
 };
 
 http._post = function(href, options, done){
@@ -27,7 +27,7 @@ http._post = function(href, options, done){
       credentials: "same-origin", referrer: "client",
       })
 
-    fetch(href, http_options).then(http_callback);
+    fetch(href, http_options).then(http_callback, done);
 };
 
 http._put = function(href, options, done){
@@ -44,7 +44,7 @@ http._put = function(href, options, done){
       credentials: "same-origin", referrer: "client",
       })
 
-    fetch(href, http_options).then(http_callback);
+    fetch(href, http_options).then(http_callback, done);
 };
 
 http._del = function(href, options, done){
@@ -61,7 +61,7 @@ http._del = function(href, options, done){
       credentials: "same-origin", referrer: "client",
       })
 
-  fetch(href, http_options).then(http_callback);
+  fetch(href, http_options).then(http_callback, done);
 };
 
 export default Client;
