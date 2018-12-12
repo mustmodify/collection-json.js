@@ -1,7 +1,7 @@
-import _ from "../underscore";
 import http from "../http";
 import client from "../client";
 import Collection from "./collection";
+import clone from '../clone';
 
 export default class Query
 {
@@ -33,7 +33,7 @@ export default class Query
 
    datum(key){
      const datum = this._query.data.find(datum => datum.name === key);
-     return _.clone(datum);
+     return clone(datum);
    }
 
    get(key){

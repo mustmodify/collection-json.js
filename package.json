@@ -16,8 +16,7 @@
   "author": "Cameron Bytheway",
   "license": "MIT",
   "dependencies": {
-    "node-fetch": "^2.3.0",
-    "underscore": "~1.4.2"
+    "node-fetch": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",

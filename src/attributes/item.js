@@ -1,5 +1,6 @@
-import _ from '../underscore';
+import clone from '../clone';
 import http from "../http";
+
 import client from "../client";
 import Collection from "./collection";
 import Link from "./link";
@@ -20,7 +21,7 @@ export default class Item
      if(datum)
      {
        // So they don't edit it
-       return _.clone(datum);
+       return clone(datum);
      }
      else
      {

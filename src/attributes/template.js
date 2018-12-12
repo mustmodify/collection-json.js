@@ -1,6 +1,7 @@
-import _ from "../underscore";
+import clone from '../clone';
 import http from "../http";
 import client from "../client";
+
 import collection from "./collection";
 
 export default class Template {
@@ -13,14 +14,23 @@ export default class Template {
     const { _template } = this;
     const _form = this.form;
 
-    _.each((_template != null ? _template.data : undefined) || [], function(datum){
-      if ((_form[datum.name] == null)) { return _form[datum.name] = datum.value; }
-    });
+    if(_template != null && _template != undefined && _template.data)
+    {
+      _template.data.forEach(function(datum)
+      {
+        if(_form[datum.name] == null) { _form[datum.name] = datum.value; }
+      })
+    }
   }
 
   datum(key){
-    const datum = _.find((this._template != null ? this._template.data : undefined) || [], datum=> datum.name === key);
-    return _.clone(datum);
+    if(this._template == null)
+    { return null; }
+    else
+    {
+      let datum = this._template.data.find(datum=> datum.name === key);
+      return clone(datum);
+    }
   }
 
   get(key){
@@ -38,7 +48,7 @@ export default class Template {
 
   submit(done){
     if (done == null) { done = function(){}; }
-    const form = _.map(this.form, (value, name)=> ({name, value}));
+    const form = this.form.map((value, name)=> ({name, value}));
 
     const options = {
       body: {
