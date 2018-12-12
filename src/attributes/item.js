@@ -1,7 +1,7 @@
 import clone from '../clone';
 import http from "../http";
 
-import client from "../client";
+import client from "../collection-json";
 import Collection from "./collection";
 import Link from "./link";
 import Template from "./template";

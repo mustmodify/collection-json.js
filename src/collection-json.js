@@ -8,10 +8,14 @@ export default class Client {
       options = {};
     }
 
-    return http.get(href, options, function(error, collection){
+    let handle_response = (error, collection) => {
       if (error) { return done(error); }
-      return Client.parse(collection, done);
-    });
+      else { Client.parse(collection, done)}
+    }
+
+    http.get(href, options, handle_response)
+
+    return(true);
   };
 
   static parse(collection, done){
@@ -60,3 +64,5 @@ export default class Client {
     return done(error, collectionObj);
   };
 }
+
+window.cJ = Client;

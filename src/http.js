@@ -3,15 +3,24 @@ import fetch from 'node-fetch';
 let content_type = "application/vnd.collection+json";
 
 class HttpImplementation {
+
+  // http_callback is used by each of the verb-methods below.
+  // It should call `done` with (error_string_or_null, body_as_text,
+  // response_headers)
+  //
   http_callback(response, done) {
-    // should call done with 'error, body-as-json, response headers'
-    if(response.status.ok || response.status < 400) {
-      done(null, response.text(), response.headers) }
+    if(response.status < 400) {
+      // strangely, response.text() returns a promise...
+      response.text().then((actual_response) => {
+        done(null, actual_response, response.headers)
+      })
+    }
     else { done(response.status); }
   }
 
   get(href, options, done) {
-    fetch(href).then((response) => this.http_callback(response, done)).catch(error => done(error));
+    fetch(href).then((response) => {this.http_callback(response, done)}).
+      catch(error => done(error));
   };
 
   post(href, options, done) {

@@ -1,5 +1,5 @@
 import http from "../http";
-import client from "../client";
+import client from "../collection-json";
 import Collection from "./collection";
 import clone from '../clone';
 

@@ -1,5 +1,5 @@
 import http from '../http';
-import Client from '../client';
+import Client from '../collection-json';
 import Collection from "./collection";
 
 export default class Link {
