@@ -1,4 +1,4 @@
-import Client from '../src/client.js'
+import Client from '../src/collection-json.js'
 
 test('throws an error if the cJ version number is unexpected', () => {
   expect.assertions(2);

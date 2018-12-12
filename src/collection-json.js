@@ -1,67 +1,62 @@
 import http from "./http";
-import Client from "./client";
-import fetch from 'node-fetch';
+import Collection from './attributes/collection';
 
-let http_callback = (response, done) => {
-    //should call done with 'error, body-as-json, response headers'
-    if(response.status.ok || response.status < 400) { done(null, response.json(), response.headers) }
-    else { done(response.status); }
-  }
+export default class Client {
+  constructor(href, options, done){
+    if (typeof options === 'function') {
+      done = options;
+      options = {};
+    }
 
-http._get = function(href, options, done){
-  options.url = href;
-  fetch(href).then((response) => http_callback(response, done)).catch(error => done(error));
-};
+    return http.get(href, options, function(error, collection){
+      if (error) { return done(error); }
+      return Client.parse(collection, done);
+    });
+  };
 
-http._post = function(href, options, done){
-  let headers = Object.assign({},
-              options.headers,
-              {"Content-Type": "application/collection+json; charset=utf-8"},
-            )
+  static parse(collection, done){
+    // Throw an error telling the caller it needs a callback for this
+    // function to make sense
+    let _error, e;
+    if ((done == null)) { throw new Error("Callback must be passed to parse"); }
 
-  http_options = Object.assign({}, options,
-      {
-           method: "POST",        body: JSON.stringify(options.body),
-          headers: headers,
-         redirect: "follow",      mode: "CORS",
-      credentials: "same-origin", referrer: "client",
-      })
+    // Is collection defined?
+    if ((collection == null)) {
+      return done();
+    }
 
-    fetch(href, http_options).then(http_callback, done);
-};
+    // If they gave us a string, turn it into an object
+    if (typeof collection === "string") {
+      try {
+        collection = JSON.parse(collection);
+      } catch (error1) {
+        e = error1;
+        e.body = collection;
+        return done(e);
+         // strangely, tests will fail without the return. I guess future
+         // future calls to 'done' are somehow also effective.
+      }
+    }
 
-http._put = function(href, options, done){
-  let headers = Object.assign({},
-              options.headers,
-              {"Content-Type": "application/collection+json; charset=utf-8"},
-            )
+    // Create a new Collection
+    let collectionObj = null;
+    try {
+      collectionObj = new Collection(collection);
+    } catch (error2) {
+      e = error2;
+      e.body = JSON.stringify(collection);
+      return done(e);
+    }
 
-  http_options = Object.assign({}, options,
-      {
-           method: "PUT",        body: JSON.stringify(options.body),
-          headers: headers,
-         redirect: "follow",      mode: "CORS",
-      credentials: "same-origin", referrer: "client",
-      })
+    let error = null;
+    if (_error = collectionObj.error) {
+      error = new Error;
+      error.title = _error.title;
+      error.message = _error.message;
+      error.code = _error.code;
+      error.body = JSON.stringify(collection);
+    }
 
-    fetch(href, http_options).then(http_callback, done);
-};
-
-http._del = function(href, options, done){
-  let headers = Object.assign({},
-              options.headers,
-              {"Content-Type": "application/collection+json; charset=utf-8"},
-            )
-
-  http_options = Object.assign({}, options,
-      {
-           method: "DELETE",        body: JSON.stringify(options.body),
-          headers: headers,
-         redirect: "follow",      mode: "CORS",
-      credentials: "same-origin", referrer: "client",
-      })
-
-  fetch(href, http_options).then(http_callback, done);
-};
-
-export default Client;
+    return done(error, collectionObj);
+  };
+}
