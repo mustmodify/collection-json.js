@@ -4,10 +4,18 @@ Collection+JSON Client for JavaScript [![Build Status](https://secure.travis-ci.
 Fork Notes
 ----------
 
+expected version of node: `nvm use 8.12.0`
+
 Test me with:
 
 ```
-npx mocha test/attributes.js --compilers js:babel-core/register
+jest
+```
+
+(or)
+
+```
+npx jest
 ```
 
 Create dist file with:
